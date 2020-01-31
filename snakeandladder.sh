@@ -10,7 +10,7 @@ rolldie=$((RANDOM%6+1))
 
 function checkOptions(){
 options=$((RANDOM%3))
-while [ $pos -le $WIN_POS ]
+while [[ $pos -lt $WIN_POS ]]
 do
 	if [ $options -eq 0 ]
 	then
@@ -18,13 +18,18 @@ do
 	elif [ $options -eq 2 ]
 	then 
 		pos=$(($pos+$rolldie))
+		if [ $pos -gt $WIN_POS ]
+		then
+		pos=$(($pos-$rolldie))
+      fi
 	else
 		pos=$(($pos-$rolldie))
-		if [ $pos -lt 0 ]
+		if [ $pos -lt $PLAYER1_START_POS ]
 		then 
 			pos=$PLAYER1_START_POS
 		fi
 	fi
+		echo "player position:" $pos
 done
 }
 checkOptions
