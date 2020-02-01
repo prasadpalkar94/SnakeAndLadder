@@ -1,6 +1,6 @@
-#!/bin/bash -x  
+#!/bin/bash -x
 echo "------------------Welcome To SnakeAndLadder-----------------------"
-declare -A dice
+declare -A randomCheck
 PLAYER1_START_POS=0
 WIN_POS=100
 NO_PLAY=1
@@ -9,34 +9,35 @@ SNAKE=3
 pos=$PLAYER1_START_POS
 
 function roll(){
-randomCheck=$((RANDOM%6+1))
+randomCheck=$((RANDOM%6 + 1))
 echo $randomCheck
+((totalrandomCheck++))
 }
-
 
 function checkOptions(){
-while [[ $pos -ne $WIN_POS ]]
-do
-options=$((RANDOM%3+1))
-			((total++))
-	case $options in 
-			  $NO_PLAY)pos=$PLAYER1_START_POS ;;
-			  $LADDER)pos=$((pos+$(roll)))   ;;
-			  $SNAKE)pos=$((pos-$(roll)))   ;;
+options=$((RANDOM%3 + 1))
+	case $options in
+			  $NO_PLAY)pos=$pos ;;
+			  $LADDER)pos=$(( $pos + $randomCheck ))
+			    		 if [ $pos -gt $WIN_POS ]
+  						 then
+     					 	pos=$(( $pos - $randomCheck ))
+  						 fi
+					  	;;
+				$SNAKE)pos=$(( $pos - $randomCheck ))
+						if [ $pos -lt $PLAYER1_START_POS ]
+  						then
+     				   	pos=$PLAYER1_START_POS
+  					   fi
+					   ;;
 	esac
-   if [[ $pos -lt $PLAYER1_START_POS ]]
-   then 
-      pos=$PLAYER1_START_POS
-   fi
-
-	 if [[ $pos -gt $WIN_POS ]]
-   then 
-      pos==$((pos-$(roll)))
-   fi
-
-	dice[$total]=$pos
-done
+	echo $pos
 }
-checkOptions
-${!dice[@]}
-${dice[@]}
+
+while [ $pos -lt $WIN_POS ]
+do
+ roll
+ checkOptions
+done
+echo "Number Of Time randomCheck Tossed: "$totalrandomCheck
+
