@@ -1,15 +1,15 @@
 #!/bin/bash -x
 echo "------------------Welcome To SnakeAndLadder-----------------------"
-declare -A randomCheck
 PLAYER_START_POS=0
 WIN_POS=100
 NO_PLAY=1
 LADDER=2
 SNAKE=3
+PLAYER1=1
+PLAYER2=2
+
 pos=$PLAYER_START_POS
 
-player1=1
-player2=2
 function roll(){
 randomCheck=$((RANDOM%6 + 1))
 echo $randomCheck
@@ -34,13 +34,12 @@ options=$((RANDOM%3 + 1))
 					   ;;
 	esac
 	echo $pos
-	echo Player $player won
 }
 
 
 function playerTurn()
 {
-	if [[ $((RANDOM%2 + 1)) -eq $player1 ]]
+	if [[ $((RANDOM%2 + 1)) -eq $PLAYER1 ]]
 	then 
 		player=1
 	else
@@ -55,3 +54,4 @@ do
 	playerTurn
 done
 echo "Number Of Time randomCheck Tossed: "$totalrandomCheck
+echo Player $player won
