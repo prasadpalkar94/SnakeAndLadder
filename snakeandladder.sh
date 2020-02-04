@@ -5,8 +5,7 @@ WIN_POS=100
 NO_PLAY=1
 LADDER=2
 SNAKE=3
-PLAYER1=1
-PLAYER2=2
+checkvalue=1
 
 pos=$PLAYER_START_POS
 
@@ -39,19 +38,19 @@ options=$((RANDOM%3 + 1))
 
 function playerTurn()
 {
-	if [[ $((RANDOM%2 + 1)) -eq $PLAYER1 ]]
+	if [[ $checkvalue -eq 1 ]]
 	then 
-		player=1
+		checkvalue=2
 	else
-		player=2
+		checkvalue=1
 	fi
 }
 
-while [ $pos -lt $WIN_POS ]
+while [ $pos -ne $WIN_POS ]
 do
 	roll
 	checkOptions
 	playerTurn
 done
 echo "Number Of Time randomCheck Tossed: "$totalrandomCheck
-echo Player $player won
+echo Player $checkvalue won
